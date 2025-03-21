@@ -12,7 +12,7 @@ const connectionString = "mongodb+srv://seanhinkley567:hi6yIe40@school.9eciq.mon
 io.on("connection", (socket) => {
     console.log(`User Connected: ${socket.id}`);
     socket.on("buttonPressed", (data) => {
-        console.log(data);
+        
     })
 })
 

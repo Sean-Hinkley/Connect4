@@ -1,5 +1,13 @@
 .block {
-    width: 6em;
-    height: 6em;
-    border-radius: 45px;
+    width:0px;
+    height: 0px;
+    padding: 4.5%;
+    margin: 5px;
+    margin-left: 20px;
+    margin-right: 20px;
+    border-radius: 40px;
+}
+
+.black {
+    background-color: black;
 }

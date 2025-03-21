@@ -37,20 +37,53 @@ const side = {
     White: 'white'
 }
 
+class Coin {
+
+    constructor(x,y) {
+        this.x = x;
+        this.y = y;
+        this.coincolor = side.Black; 
+    }
+
+
+}
+
 function isSide(role) {
     return [side.Empty, side.Black, side.White].includes(role);
 }
 class Block {
 
-    constructor(x,y) {
-        this.attrStr = `block col-2 m-1 bg-primary-subtle mx-4 border border-3 border-dark`;
+    constructor(x,y,b) {
+        this.setStr()
         this.side = side.Empty;
-
+        this.Bx = x;
+        this.By = y;
+        this.board = b;
+        
         this.div = document.createElement('div');
-        this.div.setAttribute('class', this.attrStr)
-        this.div.setAttribute("id", `O-${x}-${y}`);
+        
+        this.setAttributes();
+        
+        //console.log(this.div);
+    }
+
+    setStr() {
+        this.attrStr = `block col-2 ${this.getColorClass()} border border-3 border-dark`;
+
+
+    }
+
+    setAttributes() {
+        
+        this.div.setAttribute('class', this.attrStr);
+        this.div.setAttribute("id", `O-${this.Bx}-${this.By}`);
+        let n = this.By;
+        let d = this.div;
         this.div.addEventListener("click", function event(event) {
-            socket.emit("buttonPressed", y);
+            socket.emit("buttonPressed", {row: n, div: d});
+        });
+        socket.on("putCoin", (data) => {
+            this.setColor(side.Black);
         })
     }
 
@@ -58,19 +91,20 @@ class Block {
         let trueside = isSide(s);
         if(trueside) {
             this.side = s;
-            console.log(this.side);
+            //console.log(this.side);
         }
-        this.drawSpace();
-
+        this.setStr();
+        this.setAttributes();
     }
 
-    drawSpace() {
-        if(this.side == side.Empty) {
-            this.div.setAttribute('class', this.attrStr);
-        } else if(this.side == side.Black) {
-            this.div.setAttribute('class', `${this.attrStr} bg-dark`);
+    getColorClass() {
+        if(this.side==side.Black) {
+            return `bg-dark`;
+        } else if(this.side == side.White) {
+            return `bg-light`;
+        } else {
+            return `bg-primary-subtle`;
         }
-
     }
 }
 
@@ -87,7 +121,7 @@ class Board {
             n.setAttribute('class', "row m-auto  justify-content-center");
             this.board[x].push(n);
             for(var y = 0; y < 7; y++) {
-                let c = new Block(x,y);
+                let c = new Block(x,y,this);
                 this.board[x].push(c);
             }
         }
@@ -107,6 +141,15 @@ class Board {
             }
         }
         
+    }
+
+    drawBoard() {
+        for(var x = 0; x < this.board.length; x++) {
+
+            for(var y = 1; y < this.board[x].length; y++) {
+
+            }
+        }
     }
 }
 
